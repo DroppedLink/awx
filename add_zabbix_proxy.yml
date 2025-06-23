@@ -1,0 +1,21 @@
+- name: Add Zabbix Proxy via API
+  hosts: localhost
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_proxy_name: "zabbix-proxy-01"
+    zabbix_proxy_mode: 5  # 5=Active, 6=Passive
+  tasks:
+    - name: Register Zabbix proxy
+      zabbix_proxy:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        name: "{{ zabbix_proxy_name }}"
+        status: enabled
+        description: "Proxy added by Ansible via AWX"
+        mode: "{{ zabbix_proxy_mode }}"
+        state: present
