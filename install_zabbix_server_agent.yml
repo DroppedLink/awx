@@ -1,0 +1,25 @@
+- name: Install Zabbix Server and Agent
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Zabbix repository
+      ansible.builtin.yum:
+        name: https://repo.zabbix.com/zabbix/7.2/rhel/8/x86_64/zabbix-release-7.2-1.el8.noarch.rpm
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install Zabbix server, frontend, and agent
+      ansible.builtin.yum:
+        name:
+          - zabbix-server-mysql
+          - zabbix-web-mysql
+          - zabbix-apache-conf
+          - zabbix-agent
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install Zabbix agent (Debian/Ubuntu)
+      ansible.builtin.apt:
+        name: zabbix-agent
+        state: present
+      when: ansible_os_family == 'Debian'

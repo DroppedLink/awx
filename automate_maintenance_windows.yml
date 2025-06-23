@@ -1,0 +1,24 @@
+- name: Automate Zabbix Maintenance Windows
+  hosts: localhost
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_maintenance_name: "Nightly Maintenance"
+    zabbix_host_names:
+      - "{{ inventory_hostname }}"
+    zabbix_active_since: 1654041600  # Example: Unix timestamp
+    zabbix_active_till: 1654045200   # Example: Unix timestamp
+  tasks:
+    - name: Create or update maintenance window
+      zabbix_maintenance:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        name: "{{ zabbix_maintenance_name }}"
+        host_names: "{{ zabbix_host_names }}"
+        active_since: "{{ zabbix_active_since }}"
+        active_till: "{{ zabbix_active_till }}"
+        state: present

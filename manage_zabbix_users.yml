@@ -1,0 +1,23 @@
+- name: Manage Zabbix Users
+  hosts: localhost
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_new_user: "zabbixops"
+    zabbix_new_user_pass: "ZabbixOpsPass123"
+    zabbix_user_type: 2  # 1 - Zabbix User, 2 - Zabbix Admin, 3 - Super Admin
+  tasks:
+    - name: Create or update Zabbix user
+      zabbix_user:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        alias: "{{ zabbix_new_user }}"
+        passwd: "{{ zabbix_new_user_pass }}"
+        usrgrps:
+          - "Zabbix administrators"
+        type: "{{ zabbix_user_type }}"
+        state: present

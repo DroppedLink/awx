@@ -1,0 +1,22 @@
+- name: Backup Zabbix Configuration and Database
+  hosts: zabbix
+  become: true
+  tasks:
+    - name: Backup Zabbix database (MySQL/MariaDB example)
+      command: mysqldump -u root -pYOUR_DB_PASSWORD zabbix > /tmp/zabbix_backup.sql
+      args:
+        creates: /tmp/zabbix_backup.sql
+      ignore_errors: yes
+
+    - name: Archive Zabbix configuration files
+      archive:
+        path:
+          - /etc/zabbix
+          - /usr/share/zabbix
+        dest: /tmp/zabbix_config_backup.tar.gz
+      ignore_errors: yes
+
+    - name: Restore Zabbix database (example, manual step)
+      debug:
+        msg: "To restore, use: mysql -u root -pYOUR_DB_PASSWORD zabbix < /tmp/zabbix_backup.sql"
+      when: false

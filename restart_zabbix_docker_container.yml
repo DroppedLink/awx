@@ -1,0 +1,12 @@
+- name: Restart Zabbix Docker Container
+  hosts: zabbix
+  become: true
+  tasks:
+    - name: Find Zabbix container name
+      shell: "docker ps --format '{{ '{{.Names}}' }}' | grep zabbix"
+      register: zabbix_container_name
+
+    - name: Restart Zabbix container
+      docker_container:
+        name: "{{ zabbix_container_name.stdout | default('zabbix-server') }}"
+        state: restarted
