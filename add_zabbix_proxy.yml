@@ -7,6 +7,7 @@
     zabbix_user: "Admin"
     zabbix_password: "Admin"
     zabbix_proxy_name: "zabbix-proxy-01"
+    zabbix_proxy_status: "active"  # or "passive"
   tasks:
     - name: Register Zabbix proxy
       zabbix_proxy:
@@ -14,6 +15,6 @@
         login_user: "{{ zabbix_user }}"
         login_password: "{{ zabbix_password }}"
         proxy_name: "{{ zabbix_proxy_name }}"
-        status: enabled
+        status: "{{ zabbix_proxy_status }}"
         description: "Proxy added by Ansible via AWX"
         state: present
