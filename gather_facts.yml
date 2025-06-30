@@ -1,6 +1,7 @@
 ---
 - name: Gather facts from all hosts
   hosts: all
+  become: yes
   gather_facts: yes
   tasks:
     - name: Display gathered facts summary
