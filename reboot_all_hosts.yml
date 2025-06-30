@@ -1,0 +1,14 @@
+---
+- name: Reboot all hosts
+  hosts: all
+  become: yes
+  tasks:
+    - name: Reboot the host
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+    - name: Wait for SSH to come back
+      wait_for:
+        port: 22
+        host: "{{ inventory_hostname }}"
+        delay: 10
+        timeout: 300

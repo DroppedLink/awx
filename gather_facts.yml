@@ -1,0 +1,8 @@
+---
+- name: Gather facts from all hosts
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Display gathered facts summary
+      debug:
+        msg: "Host {{ inventory_hostname }}: OS = {{ ansible_distribution }} {{ ansible_distribution_version }}, IP = {{ ansible_default_ipv4.address }}"
