@@ -1,1 +1,4 @@
-collections:\n  - name: community.zabbix\n  - name: ansible.windows\n  - name: community.windows
+collections:
+  - name: community.zabbix
+  - name: ansible.windows
+  - name: community.windows
