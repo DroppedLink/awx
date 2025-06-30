@@ -1,2 +1,3 @@
-- name: community.zabbix
-
+# Ansible collections required for this project
+collections:
+  - name: community.zabbix
