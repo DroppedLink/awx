@@ -1,0 +1,17 @@
+- name: Configure Zabbix Host Groups
+  hosts: localhost
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_group_name: "Linux servers"
+  tasks:
+    - name: Create or update host group
+      zabbix_group:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        name: "{{ zabbix_group_name }}"
+        state: present

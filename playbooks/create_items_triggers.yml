@@ -1,0 +1,34 @@
+- name: Create Items and Triggers in Zabbix
+  hosts: localhost
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_host_name: "{{ inventory_hostname }}"
+    zabbix_item_key: "system.cpu.load[percpu,avg1]"
+    zabbix_trigger_expression: "{{ '{' }}{{ zabbix_host_name }}:system.cpu.load[percpu,avg1].last() > 2{{ '}' }}"
+  tasks:
+    - name: Create item
+      zabbix_item:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        host_name: "{{ zabbix_host_name }}"
+        key: "{{ zabbix_item_key }}"
+        name: "CPU Load (1 min avg)"
+        type: 0
+        value_type: 0
+        delay: 60
+        state: present
+
+    - name: Create trigger
+      zabbix_trigger:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        description: "High CPU load on {{ zabbix_host_name }}"
+        expression: "{{ zabbix_trigger_expression }}"
+        priority: 4
+        state: present

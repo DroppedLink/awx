@@ -1,0 +1,14 @@
+---
+# AWX Workflow Template: Zabbix Maintenance
+name: Zabbix Maintenance Workflow
+organization: Default
+workflow_nodes:
+  - identifier: automate_maintenance
+    unified_job_template: Automate Maintenance Windows
+    success_nodes:
+      - identifier: backup_config
+        unified_job_template: Backup Restore Zabbix Config
+        success_nodes:
+          - identifier: restart_container
+            unified_job_template: Restart Zabbix Docker Container
+    failure_nodes: []

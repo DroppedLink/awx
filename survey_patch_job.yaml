@@ -1,0 +1,19 @@
+- type: multiplechoice
+  question_name: "Which environment?"
+  variable: environment
+  choices:
+    - dev
+    - prod
+  required: true
+- type: multiplechoice
+  question_name: "Patch type?"
+  variable: patch_type
+  choices:
+    - Security
+    - All
+    - Custom
+  required: true
+- type: confirm
+  question_name: "Reboot after patch?"
+  variable: reboot
+  required: true

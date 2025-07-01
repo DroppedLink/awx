@@ -1,0 +1,16 @@
+---
+# AWX Workflow Template: Patch & Reboot
+name: Patch & Reboot Workflow
+organization: Default
+survey_enabled: true
+workflow_nodes:
+  - identifier: patch_hosts
+    unified_job_template: Patch Hosts
+    success_nodes:
+      - identifier: reboot_hosts
+        unified_job_template: Reboot All Hosts
+        when: "{{ survey_reboot | default(false) }}"
+        success_nodes:
+          - identifier: verify_health
+            unified_job_template: Verify Zabbix Health
+    failure_nodes: []
