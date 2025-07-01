@@ -1,0 +1,7 @@
+
+- hosts: all
+  become: true
+  roles:
+    - role: ansible-lockdown.rhel8_cis
+      vars:
+        rhel8cis_section1: true

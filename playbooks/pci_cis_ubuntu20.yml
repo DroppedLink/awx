@@ -1,0 +1,7 @@
+
+- hosts: all
+  become: true
+  roles:
+    - role: ansible-lockdown.ubuntu20_cis
+      vars:
+        ubuntu20cis_section1: true

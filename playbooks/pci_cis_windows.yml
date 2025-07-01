@@ -1,0 +1,7 @@
+
+- hosts: all
+  become: false
+  roles:
+    - role: devsec.hardening.windows
+      vars:
+        windows_baseline_section1: true
