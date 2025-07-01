@@ -1,0 +1,31 @@
+- name: Add AWX inventory hosts to Zabbix
+  hosts: all
+  gather_facts: false
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_groups:
+      - Linux servers
+    zabbix_templates:
+      - Template OS Linux
+  tasks:
+    - name: Add host to Zabbix
+      zabbix_host:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        host_name: "{{ inventory_hostname }}"
+        visible_name: "{{ inventory_hostname }}"
+        interfaces:
+          - type: 1
+            main: 1
+            useip: 1
+            ip: "{{ hostvars[inventory_hostname]['ansible_host'] | default(inventory_hostname) }}"
+            dns: ""
+            port: 10050
+        groups: "{{ zabbix_groups }}"
+        templates: "{{ zabbix_templates }}"
+        state: present

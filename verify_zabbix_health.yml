@@ -1,0 +1,25 @@
+- name: Verify Zabbix Health
+  hosts: localhost
+  gather_facts: false
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+  tasks:
+    - name: Query Zabbix API endpoint
+      uri:
+        url: "{{ zabbix_api_url }}"
+        method: POST
+        body: '{}'
+        body_format: json
+        return_content: yes
+        status_code: 200
+      register: zabbix_api_response
+      ignore_errors: yes
+
+    - name: Show Zabbix API response
+      debug:
+        var: zabbix_api_response.content
+
+    - name: Fail if Zabbix API is not healthy
+      fail:
+        msg: "Zabbix API is not responding as expected!"
+      when: zabbix_api_response.status != 200 or 'error' not in zabbix_api_response.json

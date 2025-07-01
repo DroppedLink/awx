@@ -1,0 +1,29 @@
+- name: Register Hosts in Zabbix
+  hosts: localhost
+  collections:
+    - community.zabbix
+  vars:
+    zabbix_api_url: "http://10.0.0.74:8080/api_jsonrpc.php"
+    zabbix_user: "Admin"
+    zabbix_password: "Admin"
+    zabbix_host_name: "{{ inventory_hostname }}"
+    zabbix_host_ip: "{{ hostvars[inventory_hostname]['ansible_host'] | default(inventory_hostname) }}"
+    zabbix_groups:
+      - Linux servers
+  tasks:
+    - name: Create Zabbix host
+      zabbix_host:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_user }}"
+        login_password: "{{ zabbix_password }}"
+        host_name: "{{ zabbix_host_name }}"
+        visible_name: "{{ zabbix_host_name }}"
+        interfaces:
+          - type: 1
+            main: 1
+            useip: 1
+            ip: "{{ zabbix_host_ip }}"
+            dns: ""
+            port: 10050
+        groups: "{{ zabbix_groups }}"
+        state: present

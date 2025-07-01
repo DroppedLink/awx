@@ -1,0 +1,46 @@
+---
+- name: Install Zabbix Agent2 7.2 on Debian/Ubuntu
+  hosts: all
+  become: yes
+  vars:
+    zabbix_version: "7.2"
+    zabbix_repo_url_debian: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/debian/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+debian(lsb_release -rs)_all.deb"
+    zabbix_repo_url_ubuntu: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/ubuntu/pool/main/z/zabbix-release/zabbix-release_{{ zabbix_version }}-1+ubuntu(lsb_release -rs)_all.deb"
+  tasks:
+    - name: Gather OS distribution
+      ansible.builtin.setup:
+        filter: ansible_distribution*
+
+    - name: Set Zabbix repo URL for Debian
+      set_fact:
+        zabbix_repo_url: "{{ zabbix_repo_url_debian }}"
+      when: ansible_facts['os_family'] == 'Debian' and ansible_facts['distribution'] == 'Debian'
+
+    - name: Set Zabbix repo URL for Ubuntu
+      set_fact:
+        zabbix_repo_url: "{{ zabbix_repo_url_ubuntu }}"
+      when: ansible_facts['os_family'] == 'Debian' and ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Download Zabbix repository package
+      ansible.builtin.get_url:
+        url: "{{ zabbix_repo_url }}"
+        dest: /tmp/zabbix-release.deb
+
+    - name: Install Zabbix repository package
+      ansible.builtin.apt:
+        deb: /tmp/zabbix-release.deb
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Zabbix agent2
+      ansible.builtin.apt:
+        name: zabbix-agent2
+        state: present
+
+    - name: Enable and start zabbix-agent2
+      ansible.builtin.service:
+        name: zabbix-agent2
+        enabled: yes
+        state: started
