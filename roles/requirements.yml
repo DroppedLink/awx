@@ -1,0 +1,12 @@
+- src: ansible-lockdown.rhel8-cis
+  name: ansible-lockdown.rhel8_cis
+#  version: vX.Y.Z
+- src: ansible-lockdown.ubuntu2404-cis
+  name: ansible-lockdown.ubuntu24_cis
+#  version: vX.Y.Z
+- src: ansible-lockdown.ubuntu2204-cis
+  name: ansible-lockdown.ubuntu22_cis
+#  version: vX.Y.Z
+- src: ansible-lockdown.ubuntu2004-cis
+  name: ansible-lockdown.ubuntu20_cis
+#  version: vX.Y.Z
