@@ -1,4 +1,0 @@
-collections:
-  - name: community.zabbix
-  - name: ansible.windows
-  - name: community.windows
