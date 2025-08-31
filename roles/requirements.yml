@@ -4,3 +4,7 @@
 - src: https://github.com/ansible-lockdown/UBUNTU24-CIS
   scm: git
   name: ansible-lockdown.ubuntu24_cis
+
+- src: https://github.com/ansible-lockdown/UBUNTU22-CIS
+  scm: git
+  name: ansible-lockdown.ubuntu22_cis
