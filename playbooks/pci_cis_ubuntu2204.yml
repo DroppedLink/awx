@@ -3,3 +3,8 @@
   become: true
   roles:
     - role: ansible-lockdown.ubuntu22_cis
+
+vars:
+  ubtu22cis_rule_1_4_1: false
+  ubtu22cis_set_grub_user_pass: false
+  ubtu22cis_set_boot_pass: false
